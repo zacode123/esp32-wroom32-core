@@ -1,0 +1,38 @@
+name: Build ESP32 Core Tarball
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ESP32 Arduino Core
+        uses: actions/checkout@v4
+        with:
+          repository: zacode123/esp32-wroom32-core
+          ref: 2.0.17
+          submodules: recursive
+          path: arduino-esp32
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip xz-utils
+          python3 -m pip install pyserial click requests
+
+      - name: Download ESP32 tools (toolchains, SDKs, etc.)
+        run: |
+          cd arduino-esp32/tools
+          python3 get.py
+
+      - name: Create compressed tarball
+        run: |
+          tar -cJf esp32-core-full.tar.xz arduino-esp32
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: esp32-core-full
+          path: esp32-core-full.tar.xz
