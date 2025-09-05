@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt update && sudo apt install -y python3-pip xz-utils && python3 -m pip install pyserial click requests
-      - run: python3 tools/get.py
+      - run: python3 ./tools/get.py
       - run: tar -cJf esp32-core-wroom32.tar.xz .
       - uses: actions/upload-artifact@v4
         with:
