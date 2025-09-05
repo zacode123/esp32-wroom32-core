@@ -21,7 +21,7 @@ jobs:
         run: python3 tools/get.py
 
       - name: Create compressed tarball
-        run: tar -cJf esp32-core-full.tar.xz .
+        run: tar -cJf esp32-core-full.tar.xz . --exclude=esp32-core-full.tar.xz
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
